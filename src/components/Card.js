@@ -5,6 +5,8 @@ import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, Width
 import { useEffect } from 'react'
 import logoSvg from '../assets/Logo_Notaria121_ALTA (1).png'
 
+
+
 function getBase64Image(imgUrl, callback) {
     const img = new Image();
     img.crossOrigin = 'Anonymous';
@@ -25,7 +27,10 @@ export default function ResponsivaGenerator() {
     marca: 'DELL',
     modelo: 'VOSTRO 500',
     serialNumber: 'HK5ZMKG3',
-    recipient: 'Lic. Victor Medina'
+    lectorHid: 'P320E09639',
+    recipient: 'Lic. Victor Medina',
+    modem: '',
+    cablemodem: ''
   });
 
   const [logoBase64, setLogoBase64] = useState('');
@@ -34,8 +39,9 @@ export default function ResponsivaGenerator() {
     getBase64Image(logoSvg, setLogoBase64);
   }, []);
 
-  const serialNumbers = ['HK5ZMKG3', 'AB123CD45', 'XY789ZW01']
-  const recipients = ['Lic. Victor Medina', 'Lic. Maria Rodriguez', 'Lic. Juan Perez']
+  const serialNumbers = ['HK5ZMKG3', 'CNY4KG3', '67CZKW2']
+  const recipients = ['Lic. Victor Medina','Lic. Edgar Magallan', 'Lic. Cesar Rocha', 'Lic. Guadalupe Cruz', 'Lic. Arturo Aguilar', 'Lic. Rafael Angeles', 'Lic Ivan Ramirez', 'Lic. Amando Mastachi', 'Lic. Jorge Ramirez', 'Lic. Humberto Montes', 'Lic. Andrea Suarez', 'Lic. Juan Moran', 'Lic. Neftali Gracida', 'Lic. Dulce Gomez', 'Lic. Luis Meneses', 'Lic. Adan Moctezuma', 'Lic. Renato Toledo', 'Lic. Armando Gomez', 'Jannet Delgado','Lic. Brayan Lara','Lic. Luis Manjarrez']
+  const lectoresHid = ['P320E09638', 'P320E09639', 'P320E09640']
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -46,7 +52,7 @@ export default function ResponsivaGenerator() {
   }
 
   const generateWord = () => {
-    const { marca, modelo, serialNumber, recipient } = formData
+    const { marca, modelo, lectorHid, serialNumber, recipient } = formData
     const doc = new Document({
       sections: [{
         properties: {},
@@ -95,7 +101,7 @@ export default function ResponsivaGenerator() {
           new Paragraph({
             children: [
               new TextRun({
-                text: `Sirva éste como comprobante de entrega del equipo marca: ${marca}, Modelo: ${modelo}, S/N: ${serialNumber}, con eliminador original y lector de huellas "HID" con N° de serie P320E09639, en la Notaria 121 de la Ciudad de México, y se entrega a ${recipient} quien en lo sucesivo se le denominará "EL RESPONSABLE", para el mejor desarrollo de sus funciones, quien se compromete a resguardarlo y darle un uso estrictamente laboral.`,
+                text: `Sirva éste como comprobante de entrega del equipo marca: ${marca}, Modelo: ${modelo}, S/N: ${serialNumber}, con eliminador original y lector de huellas "HID" con N° de serie ${lectorHid}, en la Notaria 121 de la Ciudad de México, y se entrega a ${recipient} quien en lo sucesivo se le denominará "EL RESPONSABLE", para el mejor desarrollo de sus funciones, quien se compromete a resguardarlo y darle un uso estrictamente laboral.`,
                 size: 24,
               }),
             ],
@@ -128,7 +134,7 @@ En caso de daño parcial “EL RESPONSABLE” cubrirá el monto total resultante
                 size: 24,
               }),
             ],
-            spacing: { before: 400, after: 1800 },
+            spacing: { before: 400, after: 1600 },
           }),
           new Table({
             rows: [
@@ -300,6 +306,21 @@ En caso de daño parcial “EL RESPONSABLE” cubrirá el monto total resultante
             </Form.Group>
 
             <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm="3">Lector HID</Form.Label>
+              <Col sm="9">
+                <Form.Select 
+                  name="lectorHid"
+                  value={formData.lectorHid} 
+                  onChange={handleInputChange}
+                >
+                  {lectoresHid.map((lh) => (
+                    <option key={lh} value={lh}>{lh}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} className="mb-3">
               <Form.Label column sm="3">Se entrega a</Form.Label>
               <Col sm="9">
                 <Form.Select 
@@ -313,6 +334,32 @@ En caso de daño parcial “EL RESPONSABLE” cubrirá el monto total resultante
                 </Form.Select>
               </Col>
             </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+        <Form.Label column sm="3">Modem</Form.Label>
+        <Col sm="9">
+          <Form.Select 
+            name="modem" 
+            value={formData.modem} 
+            onChange={handleInputChange}
+          >
+            <option value="si">Sí</option>
+            <option value="no">No</option>
+          </Form.Select>
+        </Col>
+      </Form.Group>
+      <Form.Group as={Row} className="mb-3">
+        <Form.Label column sm="3">Cable Modem</Form.Label>
+        <Col sm="9">
+          <Form.Select 
+            name="cableModem" 
+            value={formData.cableModem} 
+            onChange={handleInputChange}
+          >
+            <option value="si">Sí</option>
+            <option value="no">No</option>
+          </Form.Select>
+        </Col>
+      </Form.Group>
           </Form>
         </Card.Body>
       </Card>
